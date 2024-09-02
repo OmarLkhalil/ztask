@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Zonak-Task</string>
+    <string name="share_text">Share It</string>
+    <string name="description">Description:</string>
+    <string name="content">Content:</string>
+    <string name="see_all">See All</string>
 </resources>

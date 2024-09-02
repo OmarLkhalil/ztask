@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class PreferencesImplementation @Inject constructor(
     private val preferenceDataSource: PreferenceDataSource,
-    private val moshi: Moshi
+    moshi: Moshi
 ) : PreferencesRepository {
 
     private val newsKey = "news_key"

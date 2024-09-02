@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetAllNewsUseCase @Inject constructor(
     private val newsRepo: NewsRepo
 ) {
-    suspend operator fun invoke() = newsRepo.onGetAllNews()
+    suspend operator fun invoke(category: String) = newsRepo.onGetAllNews(category)
 }

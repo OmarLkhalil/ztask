@@ -3,6 +3,7 @@ package com.larryyu.zonak_task.di
 import com.larryyu.zonak_task.data.remote.NewsEndPoint
 import com.larryyu.zonak_task.data.repoimpl.NewsRepoImplementation
 import com.larryyu.zonak_task.domain.repo.NewsRepo
+import com.larryyu.zonak_task.ui.screens.home.base.HomeNewsReducer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +24,8 @@ object HomeModule {
     @Provides
     fun provideNewsRepo(api: NewsEndPoint): NewsRepo =
         NewsRepoImplementation(api)
+
+    @Singleton
+    @Provides
+    fun provideReducer() : HomeNewsReducer = HomeNewsReducer()
 }

@@ -1,23 +1,25 @@
 package com.larryyu.zonak_task.domain.models.categories_response
 
 
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class CategoriesResponseItem(
-    @Json(name = "category")
+    @field:SerializedName("category")
     val category: String? = "",
-    @Json(name = "country")
+    @field:SerializedName("country")
     val country: String? = "",
-    @Json(name = "description")
+    @field:SerializedName( "description")
     val description: String? = "",
-    @Json(name = "id")
+    val isSelected : Boolean = false,
+    @field:SerializedName( "id")
     val id: String? = "",
-    @Json(name = "language")
+    @field:SerializedName( "language")
     val language: String? = "",
-    @Json(name = "name")
+    @field:SerializedName("name")
     val name: String? = "",
-    @Json(name = "url")
+    @field:SerializedName( "url")
     val url: String? = "",
 )

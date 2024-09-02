@@ -9,5 +9,5 @@ data class BaseResponse<T>(
     @Json(name = "status") val status: String,
     @Json(name = "articles") val articles: T? = null,
     @Json(name = "sources") val sources: T? = null,
-    @Json(name = "totalResults") val msg: Int? = 0,
+    @Json(name = "totalResults") val msg: Int? = 0
 ) : Serializable
