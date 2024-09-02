@@ -3,6 +3,10 @@ package com.larryyu.zonak_task.domain.utils
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.larryyu.zonak_task.domain.entity.BaseResponse
+import com.larryyu.zonak_task.domain.utils.FailRequestCode.BLOCKED
+import com.larryyu.zonak_task.domain.utils.FailRequestCode.EXCEPTION
+import com.larryyu.zonak_task.domain.utils.FailRequestCode.UN_AUTH
+import com.larryyu.zonak_task.domain.utils.FailRequestCode.UN_PROCESS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.Flow
@@ -39,15 +43,15 @@ fun <T> handleError(it: Throwable): DataState<T> {
     it.printStackTrace()
     return when (it) {
         is TimeoutCancellationException -> {
-            DataState.Error(Exception("Timeout"))
+            DataState.Error(NetworkExceptions.TimeoutException)
         }
 
         is UnknownHostException -> {
-            DataState.Error(Exception("No Internet"))
+            DataState.Error(NetworkExceptions.NoInternetError)
         }
 
         is IOException -> {
-            DataState.Error(Exception("Network Error"))
+            DataState.Error(NetworkExceptions.NetworkError)
         }
 
         is HttpException -> {
@@ -55,7 +59,7 @@ fun <T> handleError(it: Throwable): DataState<T> {
         }
 
         else -> {
-            DataState.Error(Exception("Unknown Error"))
+            DataState.Error(NetworkExceptions.UnknownException)
         }
     }
 
@@ -68,24 +72,13 @@ fun convertErrorBody(throwable: HttpException): Exception {
     try {
         response = Gson().fromJson(errorBody, BaseResponse::class.java)
     } catch (e: JsonSyntaxException) {
-        return Exception("Invalid server response")
+        return NetworkExceptions.UnknownException
     }
 
     return when (throwable.code()) {
-        401, 419 -> {
-            Exception("Unauthorized")
-        }
-
-        404 -> {
-            Exception("Not Found")
-        }
-
-        500 -> {
-            Exception("Server Error")
-        }
-
-        else -> {
-            Exception(response.status)
-        }
+        UN_AUTH, BLOCKED -> NetworkExceptions.AuthorizationException
+        EXCEPTION -> NetworkExceptions.ServerException
+        UN_PROCESS -> NetworkExceptions.UnProcessableContent(response.status)
+        else -> NetworkExceptions.UnknownException
     }
 }

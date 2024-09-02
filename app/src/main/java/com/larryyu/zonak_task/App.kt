@@ -1,4 +1,7 @@
 package com.larryyu.zonak_task
 
-class App {
-}
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class App  : Application()
